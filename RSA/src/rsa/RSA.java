@@ -11,40 +11,81 @@ import java.util.*;
 
 
 public class RSA {
-    public static void main(String[] args) {
-        SecureRandom rand = new SecureRandom();
-        System.out.println(rand.nextInt());
-    }
+    
+    private BigInteger e;
+    private BigInteger d;
+    private BigInteger omegaN;
+    private BigInteger n;
+    
     public RSA(){
-        BigInteger e;
-        BigInteger d;
+        KeyGenerator(2048);
     }
     
-    public static void KeyRSA(int bits){
+    public void KeyGenerator(int bits){
+        
+    //  BigInteger(int bitLength, int certainty, Random rand)
+    //  bitLength: Do dai chuoi bit cua BI tra ve
+    //  certainty: Kha nang de so BI duoc tao ra la 1 snt > (1-0.5^certainty) -> certainty cang cao, kha nag BI la snt cang cao
+    //  rand: tap cac bit ngau nhien dung de chon so de dua di ktra tinh nguyen thuy(primality)
+    //  BigInteger t = new BigInteger();       
+
         SecureRandom rand = new SecureRandom();
-        rand.toString();
-//  BigInteger(int bitLength, int certainty, Random rand)
-//  bitLength: Do dai chuoi bit cua BI tra ve
-//  certainty: Kha nang de so BI duoc tao ra la 1 snt > (1-0.5^certainty) -> certainty cang cao, kha nag BI la snt cang cao
-//  rand: tap cac bit ngau nhien dung de chon so de dua di ktra tinh nguyen thuy(primality)
-//        BigInteger t = new BigInteger();       
         BigInteger p = new BigInteger(bits, 100, rand);       
         BigInteger q = new BigInteger(bits, 100, rand);
-        BigInteger n = p.multiply(q);
-        BigInteger omegaN = omegaN(p, q);
+//        BigInteger p = new BigInteger("3");       
+//        BigInteger q = new BigInteger("11");
+        n = p.multiply(q);
+        omegaN = omegaN(p, q);
+        
+        boolean generated = false;
+        
+        while(!generated){
+            this.e = new BigInteger(bits, 50, rand);
+            if(e.gcd(omegaN).equals(BigInteger.ONE) && e.compareTo(omegaN) < 0){
+                generated = true;
+            }
+        }
+        
+//        this.e = new BigInteger("7");
+        this.d = e.modInverse(omegaN);
     }
     
-    public static BigInteger omegaN(BigInteger p, BigInteger q){
+    public BigInteger omegaN(BigInteger p, BigInteger q){
         BigInteger temp1 = p.subtract(BigInteger.ONE);
         BigInteger temp2 = q.subtract(BigInteger.ONE);
         return temp1.multiply(temp2);
     }
     
-    public static void print(int n){
+    public synchronized BigInteger encrypt(BigInteger mess){
+        return mess.modPow(e, n);
+    }
+    
+    public synchronized BigInteger decrypt(BigInteger encrypedMess){
+        return encrypedMess.modPow(d, n);
+    }
+    
+    public void print(int n){
         System.out.println(n);       
     }
 
-    public static void print(String s){
+    public void print(String s){
         System.out.println(s);       
     }
+
+    public BigInteger getE() {
+        return e;
+    }
+
+    public BigInteger getD() {
+        return d;
+    }
+
+    public BigInteger getOmegaN() {
+        return omegaN;
+    }
+
+    public BigInteger getN() {
+        return n;
+    }
+    
 }
