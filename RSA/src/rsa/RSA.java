@@ -4,12 +4,7 @@
  */
 package rsa;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.math.*;
 import java.security.SecureRandom;
 import java.util.Vector;
@@ -36,8 +31,7 @@ public class RSA {
         SecureRandom rand = new SecureRandom();
         BigInteger p = new BigInteger(bits, 100, rand);       
         BigInteger q = new BigInteger(bits, 100, rand);
-//        BigInteger p = new BigInteger("3");       
-//        BigInteger q = new BigInteger("11");
+
         n = p.multiply(q);
         phiN = phiN(p, q);
         
@@ -50,7 +44,6 @@ public class RSA {
             }
         }
         
-//        this.e = new BigInteger("7");
         this.d = e.modInverse(phiN);
     }
     
@@ -70,12 +63,13 @@ public class RSA {
         return encrypedMess.modPow(e, n);
     }
     
-    public synchronized BigInteger decryptWithPublicKey(String MESS_FILE_NAME) throws FileNotFoundException, IOException, ClassNotFoundException{
-//        return encrypedMess.modPow(d, n);
-        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("public_key.in"));
+    public synchronized BigInteger decryptWithPublicKey(String MESS_FILE_NAME, String PUBLIC_KEY_FILE_NAME) throws FileNotFoundException, IOException, ClassNotFoundException{
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(PUBLIC_KEY_FILE_NAME));
         Vector<BigInteger> pubicKey = (Vector<BigInteger>) ois.readObject();
+
         ois = new ObjectInputStream(new FileInputStream(MESS_FILE_NAME));
         BigInteger encrypedMess = (BigInteger) ois.readObject();
+
         ois.close();
         return encrypedMess.modPow(pubicKey.get(0), pubicKey.get(1));
     }
@@ -84,6 +78,7 @@ public class RSA {
         FileOutputStream fos = new FileOutputStream("public_key.in");
         ObjectOutputStream ois = new ObjectOutputStream(fos);
         Vector<BigInteger> pubicKey = new Vector<>();
+
         pubicKey.add(this.e);
         pubicKey.add(this.n);
         ois.writeObject(pubicKey);
