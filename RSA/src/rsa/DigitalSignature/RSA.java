@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package rsa;
+package rsa.DigitalSignature;
 
 import java.io.*;
 import java.math.*;
@@ -63,11 +63,11 @@ public class RSA {
         return encrypedMess.modPow(e, n);
     }
     
-    public synchronized BigInteger decryptWithPublicKey(String MESS_FILE_NAME, String PUBLIC_KEY_FILE_NAME) throws FileNotFoundException, IOException, ClassNotFoundException{
-        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(PUBLIC_KEY_FILE_NAME));
+    public synchronized BigInteger decryptWithPublicKey(String ENCRYPTED_DIGEST_MESS_FILENAME, String PUBLIC_KEY_FILENAME) throws FileNotFoundException, IOException, ClassNotFoundException{
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(PUBLIC_KEY_FILENAME));
         Vector<BigInteger> pubicKey = (Vector<BigInteger>) ois.readObject();
 
-        ois = new ObjectInputStream(new FileInputStream(MESS_FILE_NAME));
+        ois = new ObjectInputStream(new FileInputStream(ENCRYPTED_DIGEST_MESS_FILENAME));
         BigInteger encrypedMess = (BigInteger) ois.readObject();
 
         ois.close();
@@ -86,11 +86,12 @@ public class RSA {
     }
     
     public void writeEncryptedMessToFile(BigInteger encryptedMess) throws FileNotFoundException, IOException{
-        FileOutputStream fos = new FileOutputStream("encrypted_mess.in");
+        FileOutputStream fos = new FileOutputStream("encrypted_digest_mess.in");
         ObjectOutputStream ois = new ObjectOutputStream(fos);
         ois.writeObject(encryptedMess);
         ois.close();
     }
+    
     public BigInteger getE() {
         return e;
     }
