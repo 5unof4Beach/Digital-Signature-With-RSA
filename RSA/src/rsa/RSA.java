@@ -4,8 +4,15 @@
  */
 package rsa;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.*;
 import java.security.SecureRandom;
+import java.util.Vector;
 
 public class RSA {
     
@@ -63,14 +70,32 @@ public class RSA {
         return encrypedMess.modPow(e, n);
     }
     
-    public void print(int n){
-        System.out.println(n);       
+    public synchronized BigInteger decryptWithPublicKey(String MESS_FILE_NAME) throws FileNotFoundException, IOException, ClassNotFoundException{
+//        return encrypedMess.modPow(d, n);
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("public_key.in"));
+        Vector<BigInteger> pubicKey = (Vector<BigInteger>) ois.readObject();
+        ois = new ObjectInputStream(new FileInputStream(MESS_FILE_NAME));
+        BigInteger encrypedMess = (BigInteger) ois.readObject();
+        ois.close();
+        return encrypedMess.modPow(pubicKey.get(0), pubicKey.get(1));
     }
 
-    public void print(String s){
-        System.out.println(s);       
+    public void writeKeyToFile() throws FileNotFoundException, IOException{
+        FileOutputStream fos = new FileOutputStream("public_key.in");
+        ObjectOutputStream ois = new ObjectOutputStream(fos);
+        Vector<BigInteger> pubicKey = new Vector<>();
+        pubicKey.add(this.e);
+        pubicKey.add(this.n);
+        ois.writeObject(pubicKey);
+        ois.close();
     }
-
+    
+    public void writeEncryptedMessToFile(BigInteger encryptedMess) throws FileNotFoundException, IOException{
+        FileOutputStream fos = new FileOutputStream("encrypted_mess.in");
+        ObjectOutputStream ois = new ObjectOutputStream(fos);
+        ois.writeObject(encryptedMess);
+        ois.close();
+    }
     public BigInteger getE() {
         return e;
     }
