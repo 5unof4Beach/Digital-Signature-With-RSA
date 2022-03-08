@@ -17,8 +17,8 @@ public class Demo {
         
         BigInteger encryptedMess = r.encrypt(mess);
         
-        System.out.println("EncryptedMess: " + encryptedMess.toString());
+        System.out.println("EncryptedMess: " + encryptedMess);
         
-        System.out.println("DecryptedMess: " + r.decrypt(encryptedMess).toString());
+        System.out.println("DecryptedMess: " + r.decrypt(encryptedMess));
     }
 }

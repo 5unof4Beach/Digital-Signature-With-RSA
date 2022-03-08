@@ -7,9 +7,6 @@ package rsa;
 import java.math.*;
 import java.security.SecureRandom;
 
-import java.util.*;
-
-
 public class RSA {
     
     private BigInteger e;
@@ -23,11 +20,11 @@ public class RSA {
     
     public void KeyGenerator(int bits){
         
-    //  BigInteger(int bitLength, int certainty, Random rand)
-    //  bitLength: Do dai chuoi bit cua BI tra ve
-    //  certainty: Kha nang de so BI duoc tao ra la 1 snt > (1-0.5^certainty) -> certainty cang cao, kha nag BI la snt cang cao
-    //  rand: tap cac bit ngau nhien dung de chon so de dua di ktra tinh nguyen thuy(primality)
-    //  BigInteger t = new BigInteger();       
+    /*  BigInteger(int bitLength, int certainty, Random rand)
+      bitLength: Do dai chuoi bit cua BI tra ve
+      certainty: Kha nang de so BI duoc tao ra la 1 snt > (1-0.5^certainty) -> certainty cang cao, kha nag BI la snt cang cao
+      rand: tap cac bit ngau nhien dung de chon so de dua di ktra tinh nguyen thuy(primality)
+      BigInteger t = new BigInteger();       */
 
         SecureRandom rand = new SecureRandom();
         BigInteger p = new BigInteger(bits, 100, rand);       
@@ -57,11 +54,13 @@ public class RSA {
     }
     
     public synchronized BigInteger encrypt(BigInteger mess){
-        return mess.modPow(e, n);
+//        return mess.modPow(e, n);
+        return mess.modPow(d, n);
     }
     
     public synchronized BigInteger decrypt(BigInteger encrypedMess){
-        return encrypedMess.modPow(d, n);
+//        return encrypedMess.modPow(d, n);
+        return encrypedMess.modPow(e, n);
     }
     
     public void print(int n){
