@@ -14,7 +14,7 @@ public class RSA {
     
     private BigInteger e;
     private BigInteger d;
-    private BigInteger omegaN;
+    private BigInteger phiN;
     private BigInteger n;
     
     public RSA(){
@@ -35,22 +35,22 @@ public class RSA {
 //        BigInteger p = new BigInteger("3");       
 //        BigInteger q = new BigInteger("11");
         n = p.multiply(q);
-        omegaN = omegaN(p, q);
+        phiN = phiN(p, q);
         
         boolean generated = false;
         
         while(!generated){
             this.e = new BigInteger(bits, 50, rand);
-            if(e.gcd(omegaN).equals(BigInteger.ONE) && e.compareTo(omegaN) < 0){
+            if(e.gcd(phiN).equals(BigInteger.ONE) && e.compareTo(phiN) < 0){
                 generated = true;
             }
         }
         
 //        this.e = new BigInteger("7");
-        this.d = e.modInverse(omegaN);
+        this.d = e.modInverse(phiN);
     }
     
-    public BigInteger omegaN(BigInteger p, BigInteger q){
+    public BigInteger phiN(BigInteger p, BigInteger q){
         BigInteger temp1 = p.subtract(BigInteger.ONE);
         BigInteger temp2 = q.subtract(BigInteger.ONE);
         return temp1.multiply(temp2);
@@ -80,8 +80,8 @@ public class RSA {
         return d;
     }
 
-    public BigInteger getOmegaN() {
-        return omegaN;
+    public BigInteger getPhiN() {
+        return phiN;
     }
 
     public BigInteger getN() {

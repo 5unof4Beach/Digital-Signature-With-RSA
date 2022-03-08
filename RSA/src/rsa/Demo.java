@@ -13,8 +13,6 @@ public class Demo {
         System.out.printf("public key: (%s, %s)\n",r.getN().toString(), r.getE().toString());
         System.out.printf("private key: (%s, %s)\n",r.getN().toString(), r.getD().toString());
         
-//        System.out.println(r.getOmegaN().toString());
-        
         System.out.println("mess: " + mess);
         
         BigInteger encryptedMess = r.encrypt(mess);
