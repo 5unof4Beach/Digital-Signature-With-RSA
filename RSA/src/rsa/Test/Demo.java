@@ -12,6 +12,6 @@ public class Demo {
         DigitalSignature d = new DigitalSignature();
         d.setMessage("message.txt");
 //        System.out.println(d.getOriginalMess());
-        d.messageHashingAndSigning();
+        d.messageHashAndSign();
     }
 }

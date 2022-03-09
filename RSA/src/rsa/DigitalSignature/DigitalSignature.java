@@ -7,7 +7,10 @@ import java.math.BigInteger;
 import java.util.Scanner;
 
 public class DigitalSignature {
-    String originalMess = "";
+    private String originalMess = "";
+    private SHA1 s = new SHA1();
+    private RSA r = new RSA();
+
     public DigitalSignature() {
         
     }
@@ -24,9 +27,7 @@ public class DigitalSignature {
         }
     }
     
-    public void messageHashingAndSigning() throws IOException{
-        SHA1 s = new SHA1();
-        RSA r = new RSA();
+    public void messageHashAndSign() throws IOException{
         r.writeKeyToFile();
         
         String hashedMess = s.encryptThisString(originalMess);
@@ -34,9 +35,7 @@ public class DigitalSignature {
         r.writeEncryptedMessToFile(encryptedMess);
     }
     
-    public void messageChecking(String ENCRYPTED_DIGEST_MESS_FILENAME, String PUBLIC_KEY_FILENAME, String ORGINAL_MESS_FILENAME) throws IOException, FileNotFoundException, ClassNotFoundException{
-        SHA1 s = new SHA1();
-        RSA r = new RSA();
+    public void messageCheck(String ENCRYPTED_DIGEST_MESS_FILENAME, String PUBLIC_KEY_FILENAME) throws IOException, FileNotFoundException, ClassNotFoundException{
         
         BigInteger decryptedMess = r.decryptWithPublicKey(ENCRYPTED_DIGEST_MESS_FILENAME, PUBLIC_KEY_FILENAME);
         

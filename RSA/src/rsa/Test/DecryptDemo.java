@@ -11,7 +11,7 @@ public class DecryptDemo {
 
         try{
             d.setMessage("message.txt");
-            d.messageChecking("encrypted_digest_mess.in", "public_key.in", "message.txt");
+            d.messageCheck("encrypted_digest_mess.in", "public_key.in");
 //            System.out.println(d.getOriginalMess());
         }
         catch(IOException e){
