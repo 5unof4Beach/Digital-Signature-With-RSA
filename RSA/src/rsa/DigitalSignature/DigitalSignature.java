@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.util.Scanner;
 
 public class DigitalSignature {
+    
     private String originalMess = "";
     private SHA1 s = new SHA1();
     private RSA r = new RSA();
@@ -32,7 +33,11 @@ public class DigitalSignature {
         
         String hashedMess = s.encryptThisString(originalMess);
         BigInteger encryptedMess = r.encrypt(new BigInteger(hashedMess, 16));
+        
         r.writeEncryptedMessToFile(encryptedMess);
+        
+        print("Thong diep goc duoc bam", hashedMess);
+        print("Thong diep bam duoc ky", encryptedMess);
     }
     
     public void messageCheck(String ENCRYPTED_DIGEST_MESS_FILENAME, String PUBLIC_KEY_FILENAME) throws IOException, FileNotFoundException, ClassNotFoundException{
@@ -43,16 +48,22 @@ public class DigitalSignature {
         
         if(decryptedMess.equals(hashedMess)){
             System.out.println("Noi dung ven toan");
+            print("Thong diep duoc giai ma", decryptedMess);
+            print("Thong diep goc duoc bam", hashedMess);
         }
         else{
             System.out.println("Noi dung ko ven toan");
-            System.out.println(decryptedMess);
-            System.out.println(hashedMess);
+            print("Thong diep duoc giai ma", decryptedMess);
+            print("Thong diep goc duoc bam", hashedMess);
         }
     }
 
     public String getOriginalMess() {
         return originalMess;
     }
-   
+    
+    public void print(String s, Object o){
+        System.out.printf(s + ": ");
+        System.out.println(o);
+    }
 }

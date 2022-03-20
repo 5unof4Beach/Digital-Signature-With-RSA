@@ -11,6 +11,7 @@ public class Demo {
     public static void main(String[] args) throws FileNotFoundException, IOException {
         DigitalSignature d = new DigitalSignature();
         d.setMessage("message.txt");
+        // d.setMessage("CNPM my part.docx");
 //        System.out.println(d.getOriginalMess());
         d.messageHashAndSign();
     }

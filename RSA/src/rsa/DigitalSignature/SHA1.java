@@ -17,25 +17,23 @@ public class SHA1 {
             // goi cong cu xu ly thuat toan ham bam SHA1
             MessageDigest md = MessageDigest.getInstance("SHA-1");
 
-            // digest() method is called
-            // to calculate message digest of the input string
+            // goi den phuong thuc digest va tra ve mang cac byte
             // returned as array of byte
             byte[] messageDigest = md.digest(input.getBytes());
 
-            // Convert byte array into signum representation
-             BigInteger no = new BigInteger(1, messageDigest);
-//                BigInteger no = new BigInteger();
+            // Chuyen doi mang cac byte ve mot so BI duong
+            BigInteger no = new BigInteger(1, messageDigest);
 
-            // Convert message digest into hex value
-            String hashtext = no.toString(16);
+            // Chuyen thong diep dai dien ve he Hexa
+            String hashText = no.toString(16);
 
             // Add preceding 0s to make it 32 bit
-            while (hashtext.length() < 32) {
-                    hashtext = "0" + hashtext;
+            // Them cac so khong vao dang truoc de dua day so ve dang 32bit
+            while (hashText.length() < 32) {
+                    hashText = "0" + hashText;
             }
 
-            // return the HashText
-            return hashtext;
+            return hashText;
         }
 
         catch (NoSuchAlgorithmException e) {

@@ -11,6 +11,7 @@ public class DecryptDemo {
 
         try{
             d.setMessage("message.txt");
+            // d.setMessage("CNPM my part.docx");
             d.messageCheck("encrypted_digest_mess.in", "public_key.in");
 //            System.out.println(d.getOriginalMess());
         }
